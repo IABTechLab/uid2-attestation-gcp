@@ -1,18 +1,17 @@
-name: Publish Snapshot
-on: workflow_dispatch
-
+name: Publish Snapshot Package
+on:
+  workflow_dispatch:
+    inputs:
+      publish_to_maven:
+        description: 'True to publish the artifacts to maven repository, false to skip the step'
+        default: true
+        required: false
+        type: boolean
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ./.github/workflows/download_gpg_key
-        with:
-          key: ${{ secrets.GPG_KEY }}
-      - name: Check Version is snapshot
-        id: check_verion
-        uses: ./.github/workflows/check_version
-        with:
-          needs_snapshot: 'true'
-      - name: Deploy Snapshot
-        run: mvn -B -Drepo.id=ossrh -Drepo.login=${{ secrets.SONATYPE_REPO_ACCOUNT }} -Drepo.pwd="${{ secrets.SONATYPE_REPO_PASSWORD }}" -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}" clean deploy
+  build-publish-package:
+    uses: IABTechLab/uid2-shared-actions/.github/workflows/shared-java-publish-versioned-package.yaml@main
+    with: 
+      release_type: 'Snapshot'
+      publish_to_maven: ${{ inputs.publish_to_maven }}
+      java_version: "8"
+    secrets: inherit
