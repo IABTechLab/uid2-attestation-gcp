@@ -10,10 +10,19 @@ import java.nio.file.Paths;
 
 public class OidcAttestationProvider implements IAttestationProvider {
 	// the local file contains OIDC token
-	private String tokenFilePath = "/run/container_launcher/attestation_verifier_claims_token";
+	private String tokenFilePath;
+	private static final String DefaultTokenFilePath = "/run/container_launcher/attestation_verifier_claims_token";
+	
+	public OidcAttestationProvider() {
+		this(DefaultTokenFilePath);
+	}
+	
+	public OidcAttestationProvider(String tokenFilePath) {
+		this.tokenFilePath = tokenFilePath;
+	}
 
 	@Override
-	public byte[] getAttestationRequest(byte[] publicKey) throws AttestationException {
+	public byte[] getAttestationRequest(@SuppressWarnings("unused") byte[] publicKey) throws AttestationException {
 		String token = null;
 		try {
 			token = new String(Files.readAllBytes(Paths.get(tokenFilePath)));
@@ -24,9 +33,5 @@ public class OidcAttestationProvider implements IAttestationProvider {
 			throw new AttestationException("Token is empty");
 		}
 		return token.getBytes(StandardCharsets.US_ASCII);
-	}
-
-	public void setTokenFilePath(String tokenFilePath) {
-		this.tokenFilePath = tokenFilePath;
 	}
 }

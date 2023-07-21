@@ -21,8 +21,7 @@ public class OidcAttestationProviderTest {
 	
 	@Test
 	public void testLoadTokenFileSuccess() throws AttestationException {
-		final OidcAttestationProvider provider = new OidcAttestationProvider();
-		provider.setTokenFilePath(getResourcePath("/com.uid2.attestation.gcp/test/OidcToken.txt"));
+		final OidcAttestationProvider provider = new OidcAttestationProvider(getResourcePath("/com.uid2.attestation.gcp/test/OidcToken.txt"));
 		byte[] output = provider.getAttestationRequest(new byte[] { 0x01, 0x02, 0x03 });
 		String outputString = new String(output, StandardCharsets.US_ASCII);
 		Assert.assertEquals("oidc.token", outputString);
@@ -30,15 +29,16 @@ public class OidcAttestationProviderTest {
 	
 	@Test
 	public void testLoadTokenFileFailure_FileNotExist() {
-		final OidcAttestationProvider provider = new OidcAttestationProvider();
-		provider.setTokenFilePath("/com.uid2.attestation.gcp/test/OidcToken_non_exist");
+		final OidcAttestationProvider provider = new OidcAttestationProvider("/com.uid2.attestation.gcp/test/OidcToken_non_exist");
 		Assert.assertThrows(AttestationException.class, ()-> provider.getAttestationRequest(new byte[] { 0x01, 0x02, 0x03 }));
+
+		final OidcAttestationProvider providerDefaultPath = new OidcAttestationProvider();
+		Assert.assertThrows(AttestationException.class, ()-> providerDefaultPath.getAttestationRequest(new byte[] { 0x01, 0x02, 0x03 }));
 	}
 	
 	@Test
 	public void testLoadTokenFileFailure_Empty() {
-		final OidcAttestationProvider provider = new OidcAttestationProvider();
-		provider.setTokenFilePath("/com.uid2.attestation.gcp/test/OidcTokenEmpty.txt");
+		final OidcAttestationProvider provider = new OidcAttestationProvider(getResourcePath("/com.uid2.attestation.gcp/test/OidcTokenEmpty.txt"));
 		Assert.assertThrows(AttestationException.class, ()-> provider.getAttestationRequest(new byte[] { 0x01, 0x02, 0x03 }));
 	}
 }
