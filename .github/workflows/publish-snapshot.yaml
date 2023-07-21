@@ -1,6 +1,12 @@
 name: Publish Snapshot
-on: workflow_dispatch
-
+on:
+  workflow_dispatch:
+    inputs:
+      publish_to_maven:
+        description: 'True to publish the artifacts to maven repository, false to skip the step'
+        default: true
+        required: false
+        type: boolean
 jobs:
   publish:
     runs-on: ubuntu-latest
