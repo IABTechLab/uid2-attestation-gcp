@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 
 public class OidcAttestationProvider implements IAttestationProvider {
 	// the local file contains OIDC token
-	private String tokenFilePath;
+	private final String tokenFilePath;
 	private static final String DefaultTokenFilePath = "/run/container_launcher/attestation_verifier_claims_token";
 	
 	public OidcAttestationProvider() {
