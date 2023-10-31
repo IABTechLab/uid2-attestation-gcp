@@ -12,8 +12,8 @@ import java.io.IOException;
 
 public class GcpOperatorKeyRetriever implements IOperatorKeyRetriever {
     private static final Logger LOGGER = LoggerFactory.getLogger(GcpOperatorKeyRetriever.class);
-
     private final SecretVersionName secretVersionName;
+
     /**
      * Retrieve secret value from GCP SecretManager
      * @param secretVersionName in "projects/{project}/secrets/{secret}/versions/{secret_version}" format
