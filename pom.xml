@@ -7,7 +7,7 @@
 
   <groupId>com.uid2</groupId>
   <artifactId>attestation-gcp</artifactId>
-  <version>1.3.12-SNAPSHOT</version>
+  <version>1.3.14-SNAPSHOT</version>
 
   <name>${project.groupId}:${project.artifactId}</name>
   <description>UID 2.0 operator GCP attestation</description>
