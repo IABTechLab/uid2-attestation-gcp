@@ -4,6 +4,8 @@ import com.google.api.gax.retrying.RetrySettings;
 import com.google.cloud.secretmanager.v1.*;
 import com.google.common.base.Strings;
 import com.uid2.enclave.IOperatorKeyRetriever;
+import io.grpc.LoadBalancerRegistry;
+import io.grpc.internal.PickFirstLoadBalancerProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.threeten.bp.Duration;
@@ -24,6 +26,8 @@ public class GcpOperatorKeyRetriever implements IOperatorKeyRetriever {
         }
         // Will throw IllegalArgument Exception for invalid format
         this.secretVersionName = SecretVersionName.parse(secretVersionName);
+
+        LoadBalancerRegistry.getDefaultRegistry().register(new PickFirstLoadBalancerProvider());
     }
 
     @Override
