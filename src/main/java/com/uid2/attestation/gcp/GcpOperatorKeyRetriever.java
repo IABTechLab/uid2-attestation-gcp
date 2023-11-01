@@ -1,7 +1,9 @@
 package com.uid2.attestation.gcp;
 
 import com.google.api.gax.retrying.RetrySettings;
-import com.google.cloud.secretmanager.v1.*;
+import com.google.cloud.secretmanager.v1.SecretManagerServiceClient;
+import com.google.cloud.secretmanager.v1.SecretManagerServiceSettings;
+import com.google.cloud.secretmanager.v1.SecretVersionName;
 import com.google.common.base.Strings;
 import com.uid2.enclave.IOperatorKeyRetriever;
 import io.grpc.LoadBalancerRegistry;
@@ -37,7 +39,7 @@ public class GcpOperatorKeyRetriever implements IOperatorKeyRetriever {
                 .setMaxRetryDelay(Duration.ofSeconds(3))
                 .setMaxAttempts(3)
                 .build();
-        var settingsBuilder =SecretManagerServiceSettings.newBuilder();
+        var settingsBuilder = SecretManagerServiceSettings.newBuilder();
         settingsBuilder.accessSecretVersionSettings().setRetrySettings(retrySetting);
 
         try(var client = SecretManagerServiceClient.create(settingsBuilder.build())) {
