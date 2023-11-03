@@ -13,5 +13,5 @@ jobs:
     with: 
       release_type: 'Minor'
       publish_to_maven: ${{ inputs.publish_to_maven }}
-      java_version: "8"
+      java_version: "11"
     secrets: inherit
