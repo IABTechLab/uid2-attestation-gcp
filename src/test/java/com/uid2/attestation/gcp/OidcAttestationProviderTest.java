@@ -11,7 +11,9 @@ import java.nio.file.Paths;
 import java.time.Instant;
 
 public class OidcAttestationProviderTest {
-	
+	private final byte[] publicKey = new byte[] { 0x01, 0x02, 0x03 };
+	private final byte[] userData = new byte[] {0x04, 0x05};
+
 	private String getResourcePath(String name) {
 		try {
 			return Paths.get(OidcAttestationProviderTest.class.getResource(name).toURI()).toFile().getAbsolutePath();
@@ -47,7 +49,7 @@ public class OidcAttestationProviderTest {
 	@Test
 	public void testLoadTokenFileSuccess() throws AttestationException {
 		final OidcAttestationProvider provider = new OidcAttestationProvider(getResourcePath("/com.uid2.attestation.gcp/test/OidcToken.txt"));
-		byte[] output = provider.getAttestationRequest(new byte[] { 0x01, 0x02, 0x03 });
+		byte[] output = provider.getAttestationRequest(publicKey, userData);
 		String outputString = new String(output, StandardCharsets.US_ASCII);
 		Assert.assertEquals("oidc.token", outputString);
 	}
@@ -55,15 +57,15 @@ public class OidcAttestationProviderTest {
 	@Test
 	public void testLoadTokenFileFailure_FileNotExist() {
 		final OidcAttestationProvider provider = new OidcAttestationProvider("/com.uid2.attestation.gcp/test/OidcToken_non_exist");
-		Assert.assertThrows(AttestationException.class, ()-> provider.getAttestationRequest(new byte[] { 0x01, 0x02, 0x03 }));
+		Assert.assertThrows(AttestationException.class, ()-> provider.getAttestationRequest(publicKey, userData));
 
 		final OidcAttestationProvider providerDefaultPath = new OidcAttestationProvider();
-		Assert.assertThrows(AttestationException.class, ()-> providerDefaultPath.getAttestationRequest(new byte[] { 0x01, 0x02, 0x03 }));
+		Assert.assertThrows(AttestationException.class, ()-> providerDefaultPath.getAttestationRequest(publicKey, userData));
 	}
 	
 	@Test
 	public void testLoadTokenFileFailure_Empty() {
 		final OidcAttestationProvider provider = new OidcAttestationProvider(getResourcePath("/com.uid2.attestation.gcp/test/OidcTokenEmpty.txt"));
-		Assert.assertThrows(AttestationException.class, ()-> provider.getAttestationRequest(new byte[] { 0x01, 0x02, 0x03 }));
+		Assert.assertThrows(AttestationException.class, ()-> provider.getAttestationRequest(publicKey, userData));
 	}
 }

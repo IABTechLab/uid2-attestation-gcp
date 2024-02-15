@@ -17,7 +17,7 @@ public class VmidAttestationProvider implements IAttestationProvider {
 	private String metadataEndpoint = "http://metadata/computeMetadata/v1/instance/service-accounts/default/identity";
 
 	@Override
-	public byte[] getAttestationRequest(byte[] publicKey) throws AttestationException {
+	public byte[] getAttestationRequest(byte[] publicKey, byte[] userData) throws AttestationException {
 		// encode publicKey into base64 string and pass as audience
 		String audience = Base64.getEncoder().encodeToString(publicKey);
 
