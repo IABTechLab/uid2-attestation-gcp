@@ -63,7 +63,7 @@ public class OidcAttestationProvider implements IAttestationProvider {
 	}
 
 	@Override
-	public byte[] getAttestationRequest(@SuppressWarnings("unused") byte[] publicKey) throws AttestationException {
+	public byte[] getAttestationRequest(@SuppressWarnings("unused") byte[] publicKey, byte[] userData) throws AttestationException {
 		String token = null;
 		try {
 			token = new String(Files.readAllBytes(Paths.get(tokenFilePath)));
