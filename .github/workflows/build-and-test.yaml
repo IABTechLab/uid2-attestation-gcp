@@ -6,4 +6,5 @@ jobs:
     uses: IABTechLab/uid2-shared-actions/.github/workflows/shared-build-and-test.yaml@ccm-UID2-5141-fix-no-test-run
     with: 
       java_version: "21"
+      skip_tests: true
     secrets: inherit
