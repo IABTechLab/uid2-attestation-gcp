@@ -7,6 +7,4 @@ jobs:
     with: 
       java_version: "21"
       skip_tests: true
-      vulnerability_scan_only: false
-      publish_vulnerabilities: true
     secrets: inherit
